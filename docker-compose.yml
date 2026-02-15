@@ -1,24 +1,24 @@
 services:
   ftp-server:
     build: .
-    container_name: ftp_server_sri
+    container_name: "backup_vault_ftp"
     restart: unless-stopped
     ports:
       # Puerto de control FTP
       - "21:21"
       # Puerto de datos FTP (activo)
       - "20:20"
-      # Rango de puertos pasivos
-      - "21100-21110:21100-21110"
+      # Rango de puertos pasivos (RA4 Req: 40000-40100)
+      - "40000-40100:40000-40100"
     environment:
-      - FTP_USER=usuario_ftp
-      - FTP_PASS=123
-      - PASV_MIN=21100
-      - PASV_MAX=21110
-      - PASV_ADDRESS=localhost 
+      - FTP_USER=deployer
+      - FTP_PASS=A123
+      - PASV_MIN=40000
+      - PASV_MAX=40100
+      - PASV_ADDRESS=127.0.0.1 
     volumes:
-      # Persistencia de datos
-      - ftp_data:/home/usuario_ftp
+      # Persistencia de datos (Mapeamos toda la home de usuarios virtuales)
+      - ftp_data:/home/vsftpd
 
 volumes:
   ftp_data:

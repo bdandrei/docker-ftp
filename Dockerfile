@@ -1,13 +1,15 @@
 FROM debian:stable-slim
 
-# Instalar vsftpd y openssl
+# Instalar vsftpd, openssl y herramientas para base de datos (Berkeley DB)
 RUN apt-get update && apt-get install -y \
     vsftpd \
     openssl \
+    db-util \
     && rm -rf /var/lib/apt/lists/*
 
 # Copiar archivos de configuración y script de inicio
 COPY vsftpd.conf /etc/vsftpd.conf
+COPY vsftpd_virtual /etc/pam.d/vsftpd_virtual
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Dar permisos de ejecución al entrypoint
