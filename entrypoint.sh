@@ -7,13 +7,13 @@ PASV_MIN=${PASV_MIN:-21100}
 PASV_MAX=${PASV_MAX:-21110}
 PASV_ADDRESS=${PASV_ADDRESS:-localhost}
 
-# 1. Crear el usuario del sistema "vsftpd" para mapeo (si no existe)
+# Crear el usuario del sistema "vsftpd" para mapeo (si no existe)
 if ! id "vsftpd" > /dev/null 2>&1; then
     echo "Creando usuario de sistema vsftpd..."
     useradd --home /home/vsftpd --gid nogroup -m --shell /bin/false vsftpd
 fi
 
-# 2. Configuración de Usuarios Virtuales (Berkeley DB)
+# Configuración de Usuarios Virtuales (Berkeley DB)
 mkdir -p /etc/vsftpd
 echo "Generando base de datos de usuarios virtuales..."
 
@@ -45,7 +45,7 @@ $DB_LOAD_CMD -T -t hash -f /etc/vsftpd/virtual_users.txt /etc/vsftpd/virtual_use
 rm /etc/vsftpd/virtual_users.txt
 chmod 600 /etc/vsftpd/virtual_users.db
 
-# 3. Estructura de Directorios (JAULA CHROOT)
+# Estructura de Directorios (JAULA CHROOT)
 # La raíz del usuario ($USER) debe ser propiedad de root y NO escribible.
 # La subcarpeta uploads SÍ debe ser escribible por el usuario mapeado (vsftpd).
 
@@ -63,7 +63,7 @@ chmod 755 "$USER_ROOT"
 chown vsftpd:nogroup "$UPLOAD_DIR"
 chmod 775 "$UPLOAD_DIR"
 
-# 4. Generar certificado SSL (Si no existe)
+# Generar certificado SSL (Si no existe)
 if [ ! -f /etc/ssl/private/vsftpd.pem ]; then
     echo "Generando certificado SSL..."
     openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
@@ -74,7 +74,7 @@ if [ ! -f /etc/ssl/private/vsftpd.pem ]; then
     chmod 600 /etc/ssl/private/vsftpd.pem
 fi
 
-# 5. Configurar puertos pasivos dinámicamente
+# Configurar puertos pasivos dinámicamente
 CONF_FILE="/etc/vsftpd.conf"
 sed -i '/^pasv_address/d' $CONF_FILE
 sed -i '/^pasv_min_port/d' $CONF_FILE
@@ -86,7 +86,7 @@ echo "pasv_address=$PASV_ADDRESS" >> $CONF_FILE
 echo "pasv_min_port=$PASV_MIN" >> $CONF_FILE
 echo "pasv_max_port=$PASV_MAX" >> $CONF_FILE
 
-# 6. Logging
+# Logging
 touch /var/log/vsftpd.log
 chown vsftpd:nogroup /var/log/vsftpd.log
 tail -f /var/log/vsftpd.log &
