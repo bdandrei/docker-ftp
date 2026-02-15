@@ -1,0 +1,24 @@
+services:
+  ftp-server:
+    build: .
+    container_name: ftp_server_sri
+    restart: unless-stopped
+    ports:
+      # Puerto de control FTP
+      - "21:21"
+      # Puerto de datos FTP (activo)
+      - "20:20"
+      # Rango de puertos pasivos
+      - "21100-21110:21100-21110"
+    environment:
+      - FTP_USER=usuario_ftp
+      - FTP_PASS=123
+      - PASV_MIN=21100
+      - PASV_MAX=21110
+      - PASV_ADDRESS=localhost 
+    volumes:
+      # Persistencia de datos
+      - ftp_data:/home/usuario_ftp
+
+volumes:
+  ftp_data:
