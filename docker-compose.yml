@@ -8,7 +8,7 @@ services:
       - "21:21"
       # Puerto de datos FTP (activo)
       - "20:20"
-      # Rango de puertos pasivos (RA4 Req: 40000-40100)
+      # Rango de puertos pasivos
       - "40000-40100:40000-40100"
     environment:
       - FTP_USER=deployer
@@ -17,7 +17,7 @@ services:
       - PASV_MAX=40100
       - PASV_ADDRESS=127.0.0.1 
     volumes:
-      # Persistencia de datos (Mapeamos toda la home de usuarios virtuales)
+      # Persistencia de datos
       - ftp_data:/home/vsftpd
 
 volumes:

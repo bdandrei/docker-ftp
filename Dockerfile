@@ -19,7 +19,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN mkdir -p /var/run/vsftpd/empty
 
 # Exponer puertos: 20 (datos), 21 (control), y rango PASV
-EXPOSE 20 21 21100-21110
+EXPOSE 20 21 40000-40100
 
 # Definir el comando de inicio
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

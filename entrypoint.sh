@@ -3,8 +3,8 @@
 # Configuración por defecto
 FTP_USER=${FTP_USER:-usuario}
 FTP_PASS=${FTP_PASS:-123}
-PASV_MIN=${PASV_MIN:-21100}
-PASV_MAX=${PASV_MAX:-21110}
+PASV_MIN=${PASV_MIN:-40000}
+PASV_MAX=${PASV_MAX:-40100}
 PASV_ADDRESS=${PASV_ADDRESS:-localhost}
 
 # Crear el usuario del sistema "vsftpd" para mapeo (si no existe)
